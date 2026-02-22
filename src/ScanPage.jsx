@@ -559,6 +559,9 @@ export default function ScanPage() {
                             <p className="text-center text-white/30 text-xs">
                                 Powered by <span className="text-white/60 font-semibold">Holi Fest QR System</span>
                             </p>
+                            <p className="text-center text-white/20 text-xs mt-1">
+                                Developed by <span className="text-white/50 font-semibold">Bharani</span> 💜
+                            </p>
                         </div>
                     </div>
 
