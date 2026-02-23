@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AdminLogin from './AdminLogin';
 import AdminPanel from './AdminPanel';
+import AdminDatabase from './AdminDatabase';
 import ScanPage from './ScanPage';
 
 const SESSION_KEY = 'holi_admin_auth';
@@ -18,6 +19,9 @@ export default function App() {
       <Routes>
         {/* Admin ticket-adding panel — has its own password (3421) */}
         <Route path="/admin/leo" element={<AdminPanel />} />
+
+        {/* Admin database viewer */}
+        <Route path="/admin/database" element={<AdminDatabase />} />
 
         {/* All other routes go through the scan-page PIN gate (3241) */}
         <Route

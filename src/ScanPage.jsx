@@ -44,6 +44,11 @@ const IconScan = () => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v1m0 14v1M4 12h1m14 0h1M6.3 6.3l.7.7M17 17l.7.7M6.3 17.7l.7-.7M17 7l.7-.7M12 8a4 4 0 100 8 4 4 0 000-8z" />
     </svg>
 );
+const IconCurrency = () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 8h6M9 12h6M9 16h4M4 6h16M4 18h16" />
+    </svg>
+);
 
 /* ═══════════════════════════════════════════
    CONFETTI  (pure CSS + JS, no deps)
@@ -148,8 +153,9 @@ function SuccessTicket({ data, ticketCount }) {
                 <DetailRow icon={<IconUser />} label="Name" value={data.name} delay={100} />
                 <DetailRow icon={<IconMail />} label="Email" value={data.email} delay={200} />
                 <DetailRow icon={<IconPhone />} label="Phone" value={data.phoneno} delay={300} />
+                <DetailRow icon={<IconCurrency />} label="Amount Paid" value={data.amount ? `₹${data.amount}` : '—'} delay={400} />
                 {/* ticketCount comes from parent useState — updates live on every successful scan */}
-                <DetailRow icon={<IconTicket />} label="Tickets Remaining" value={ticketCount !== null ? String(ticketCount) : '—'} delay={400} />
+                <DetailRow icon={<IconTicket />} label="Tickets Remaining" value={ticketCount !== null ? String(ticketCount) : '—'} delay={500} />
             </div>
         </div>
     );

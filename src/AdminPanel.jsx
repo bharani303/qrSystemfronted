@@ -36,6 +36,11 @@ const IconHash = () => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
     </svg>
 );
+const IconCurrency = () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 8h6M9 12h6M9 16h4M4 6h16M4 18h16" />
+    </svg>
+);
 const IconCheck = () => (
     <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -242,7 +247,7 @@ function Toast({ message, onDone }) {
    ADMIN FORM
 ═══════════════════════════════════════════ */
 function AdminForm() {
-    const [form, setForm] = useState({ id: '', name: '', email: '', phoneNo: '', tickets: '' });
+    const [form, setForm] = useState({ id: '', name: '', email: '', phoneNo: '', tickets: '', amount: '' });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState(null);
@@ -266,6 +271,8 @@ function AdminForm() {
             errs.phoneNo = 'Phone must be exactly 10 digits';
         if (!form.tickets || isNaN(form.tickets) || Number(form.tickets) <= 0)
             errs.tickets = 'Enter a valid ticket count';
+        if (!form.amount || isNaN(form.amount) || Number(form.amount) <= 0)
+            errs.amount = 'Enter a valid amount';
         return errs;
     };
 
@@ -286,6 +293,7 @@ function AdminForm() {
                     email: form.email.trim(),
                     phoneno: form.phoneNo.trim(),
                     tickets: Number(form.tickets),
+                    amount: String(form.amount),
                 }),
             });
 
@@ -293,7 +301,7 @@ function AdminForm() {
 
             if (res.ok) {
                 setToast(result || 'Ticket added successfully! ✅');
-                setForm({ id: '', name: '', email: '', phoneNo: '', tickets: '' });
+                setForm({ id: '', name: '', email: '', phoneNo: '', tickets: '', amount: '' });
                 setTimeout(() => setToast(null), 3500);
             } else {
                 setApiError(result || 'Something went wrong ❌');
@@ -387,6 +395,17 @@ function AdminForm() {
                         error={errors.tickets}
                     />
 
+                    <InputField
+                        id="ticketAmount"
+                        icon={<IconCurrency />}
+                        label="Amount (₹)"
+                        type="number"
+                        placeholder="e.g. 500"
+                        value={form.amount}
+                        onChange={set('amount')}
+                        error={errors.amount}
+                    />
+
                     {/* API error */}
                     {apiError && (
                         <div className="rounded-2xl px-4 py-3 text-sm font-semibold text-red-300 text-center"
@@ -438,8 +457,17 @@ function AdminForm() {
 /* ═══════════════════════════════════════════
    MAIN EXPORT — AdminPanel page
 ═══════════════════════════════════════════ */
+const SESSION_KEY_PANEL = 'holi_admin_panel_auth';
+
 export default function AdminPanel() {
-    const [authed, setAuthed] = useState(false);
+    const [authed, setAuthed] = useState(
+        () => sessionStorage.getItem(SESSION_KEY_PANEL) === 'true'
+    );
+
+    const handleSuccess = () => {
+        sessionStorage.setItem(SESSION_KEY_PANEL, 'true');
+        setAuthed(true);
+    };
 
     return (
         <>
@@ -463,7 +491,7 @@ export default function AdminPanel() {
 
                 {/* Show login or form */}
                 {!authed
-                    ? <LoginScreen onSuccess={() => setAuthed(true)} />
+                    ? <LoginScreen onSuccess={handleSuccess} />
                     : <AdminForm />
                 }
             </div>
